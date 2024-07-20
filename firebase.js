@@ -10,7 +10,7 @@ const firebaseConfig = {
     storageBucket: "myerpapp-90365.appspot.com",
     messagingSenderId: "1034387679001",
     appId: "1:1034387679001:web:569f5de92f583941408788"
-  };
+  }; 
 
 // Initialize Firebase
 const firebaseapp = initializeApp(firebaseConfig);

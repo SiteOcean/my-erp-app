@@ -10,7 +10,6 @@ const getCustomerLoads = async (customerId) => {
 
     if (customerDoc.exists()) {
       const loadsData = customerDoc.data().loads || []; // Get loads array or initialize as empty array
-      console.log(loadsData)
       return loadsData;
     } else {
       console.log('No such document!');
