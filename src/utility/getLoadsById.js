@@ -8,8 +8,8 @@ const getLoadsById = async (loadId) => {
 
   querySnapshot.forEach((doc) => {
   
-    if(loadId === doc.data().loadData.id){
-    loadDetail.push({ id: doc.id,...doc.data().loadData });
+    if(loadId === doc.data().id){
+    loadDetail.push({ id: doc.id,...doc.data() });
     } 
   });
 

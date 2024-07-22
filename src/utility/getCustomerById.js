@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebaseConfig'; // Adjust the import path based on your project structure
+import { collection, doc, getDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 
-const getCustomerLoads = async (customerId) => {
+const getCustomerById = async (customerId) => {
   try {
     const customerRef = doc(db, 'customers', customerId);
     const customerDoc = await getDoc(customerRef);
 
     if (customerDoc.exists()) {
-      const loadsData = customerDoc.data().loads || []; // Get loads array or initialize as empty array
-      return loadsData;
+      const customerData = customerDoc.data();
+      return customerData;
     } else {
       console.log('No such document!');
       return [];
@@ -21,4 +21,4 @@ const getCustomerLoads = async (customerId) => {
   }
 };
 
-export default getCustomerLoads;
+export default getCustomerById;

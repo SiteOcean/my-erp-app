@@ -7,7 +7,7 @@ const getAllLoads = async () => {
   let loadDetail = [];
 
   querySnapshot.forEach((doc) => {
-    loadDetail.push({ id: doc.id,...doc.data().loadData });
+    loadDetail.push({ id: doc.id,...doc.data() });
   });
 
   return loadDetail;

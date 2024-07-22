@@ -3,10 +3,11 @@ import { useRouter } from 'next/router';
 import { doc, updateDoc, arrayUnion, getDoc, addDoc, collection } from 'firebase/firestore';
 import { db } from '../../firebase';
 import NavBar from '@/components/navBar';
-import {getAllCustomers} from '@/utility/getAllCustomers';
+import {getAllCustomersAndLoads} from '@/utility/getAllCustomersAndLoads';
 import getdateTime from '@/utility/getDateTime';
 import getAllLoads from '@/utility/getAllLoads';
 import { MdCurrencyRupee } from "react-icons/md";
+import MultipleSalesSection from '@/components/multipleSales';
 const SalesEntry = () => {
   const router = useRouter();
 
@@ -46,9 +47,8 @@ const SalesEntry = () => {
       }
    
       // Update the loads array inside the customer object
-      const customerData = customerDocSnap.data().customer;
-     
-
+      const customerData = customerDocSnap.data();
+      
       customerData.totalAmount = parseInt(customerData.totalAmount) + parseInt(loadData.amount)
       loadData.dateTime = getdateTime(Date())
 
@@ -58,14 +58,15 @@ const SalesEntry = () => {
 
         customerData.totalOutstanding = parseInt(customerData.totalAmount) - parseInt(customerData.totalReceived)        
       }
+    
       setIsLoading(true)
       // Update the Firestore document with the new loads array
       await updateDoc(customerDocRef, {
-        customer: {
+      
           ...customerData,
-        }
+        
       });
-      const docRef = await addDoc(collection(db, 'allLoads'), {loadData})
+      const docRef = await addDoc(collection(db, 'allLoads'), {...loadData})
       if (docRef.id) {
         alert('Load added successfully!');
         setLoadData({
@@ -112,7 +113,7 @@ const SalesEntry = () => {
   }
 
   const fetchCustomers = async () => {
-    const customersData = await getAllCustomers();
+    const customersData = await getAllCustomersAndLoads();
     const Loads = await getAllLoads();
     setCustomers(customersData);
     setallLoads(Loads);
@@ -130,17 +131,19 @@ const SalesEntry = () => {
   return (
     <div className='pb-12'>
       <NavBar/>
+    {/* <MultipleSalesSection/> */}
+
 
       <div className='flex justify-center'>
       <div className='border-2 border-[#b4e6fd] p-1 md:p-3 rounded-md space-y-1 w-[97%] md:w-[70%] mt-4 md:mt-12'>
       <h2 className='text-center text-[25px] font-semibold underline uppercase text-[#90dcff] my-2'>Sales Entry</h2>
-      {customers && customers.studentData.length > 0 ? <form onSubmit={handleFormSubmit} className='p-2 md:p-3 grid grid-cols-1 md:grid-cols-3 md:gap-12 space-y-5 md:space-y-0'>
+      {customers && customers.customerData.length > 0 ? <form onSubmit={handleFormSubmit} className='p-2 md:p-3 grid grid-cols-1 md:grid-cols-3 md:gap-12 space-y-5 md:space-y-0'>
         
         <div className='flex flex-col'>
           <label className='text-[#32b5f1] font-semibold'>Select Customer:</label>
           <select className='border-2 p-2 rounded-md outline-[#32b5f1]' name="id" onChange={(e) => inputOnchangeWithCustomerName(e)} required>
             <option value="">Select Customer</option>
-            {customers.studentData.map(customer => (
+            {customers.customerData.map(customer => (
                <option key={customer.id} value={JSON.stringify({id:customer.id, name: customer.name})} className='capitalize text-slate-700'>{customer.name}</option>
         
         ))}
@@ -226,6 +229,7 @@ const SalesEntry = () => {
     </div>
       </div>
 
+            
 
 {/* sales list table */}
 {allLoads && (
@@ -233,7 +237,7 @@ const SalesEntry = () => {
          <h1 className="text-[25px] underline uppercase text-center font-bold text-[#32b5f1] my-3">
         Sales Report
       </h1>
-          <div className="overflow-x-auto mx-auto">
+          <div className="overflow-x-auto mx-auto pl-1 md:p-0 md:w-[90%]">
             <table className="w-full">
               <thead>
                 <tr className="text-[#256c7e] capitalize">
@@ -279,7 +283,7 @@ const SalesEntry = () => {
                       parseInt(val.cashRecevied);
 
                     return (
-                      <tr key={i} className="text-slate-700 font-semibold">
+                      <tr key={i} className="text-slate-500 capitalize font-semibold">
                         <td className="px-3 py-2 border-2 border-[#c6eaf3]">
                           {serialNo}
                         </td>
@@ -327,22 +331,22 @@ const SalesEntry = () => {
               </tbody>
             </table>
           </div>
-          <div className="border-[#c6eaf3] border-2 p-3 space-y-2 font-semibold divide-y">
-            <p className='flex pl-3 justify-start items-center'>
+          <div className="border-[#c6eaf3] border-2 p-3 space-y-2 text-[23px] font-semibold divide-y pl-1 md:p-3 md:w-[90%] mx-auto mb-3">
+            <p className='flex pl-3 justify-end items-center'>
               <span className="text-[blue] w-[250px] underline">Total Amount</span>
-              <span className="pl-2 font-bold flex ">
+              <span className="pl-2 font-bold flex text-slate-700">
                 : {paymentDetails.totalAmount} 
               </span>
-              <MdCurrencyRupee/>
+              <MdCurrencyRupee className='text-slate-700'/>
             </p>
-            <p className='flex pl-3 justify-start items-center'>
+            <p className='flex pl-3 justify-end items-center text-slate-700'>
               <span className="text-[green] w-[250px] underline">Cash Received</span>
               <span className="pl-2 font-bold">
                 : {paymentDetails.totalRecived}
               </span>
               <MdCurrencyRupee/>
             </p>
-            <p className='flex pl-2 justify-start items-center'>
+            <p className='flex pl-2 justify-end items-center text-slate-700'>
               <span className="text-[red] w-[250px] underline">Total Outstanding</span>
               <span className="pl-2 font-bold">
                 : {paymentDetails.totalAmount - paymentDetails.totalRecived}

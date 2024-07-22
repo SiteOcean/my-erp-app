@@ -15,9 +15,7 @@ const AddCustomer = () => {
     totalAmount:"",
     totalOutstanding:"",
     totalReceived:"",
-    created:""
-
-
+    created:"",
   });
 
   const handleChange = (e) => {
@@ -38,14 +36,14 @@ const AddCustomer = () => {
         Address: ${customer.address}
         Email: ${customer.email}`)) {
 
-        setCustomer((prev)=>({
-          ...prev,
-          totalAmount : parseInt(0),
-          totalOutstanding : parseInt(0),
-          totalReceived : parseInt(0),
-          created: getdateTime(Date())
-        }))
-        const docRef = await addDoc(collection(db, 'customers'), {customer})
+        let temp = {...customer};
+          
+          temp.totalAmount = 0
+          temp.totalOutstanding = 0,
+          temp.totalReceived = 0,
+          temp.created= getdateTime(Date())
+
+          const docRef = await addDoc(collection(db, 'customers'), {...temp})
   
         if (docRef.id) {
           alert('Customer added successfully');
@@ -97,7 +95,7 @@ const AddCustomer = () => {
       <div className='flex flex-col text-left'>
         <label htmlFor="mobile" className='text-[#32b5f1]  font-semibold'>Mobile:</label>
         <input
-          type="text"
+          type="number"
           id="mobile"
           name="mobile"
           value={customer.mobile}

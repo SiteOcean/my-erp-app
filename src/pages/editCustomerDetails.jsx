@@ -11,11 +11,7 @@ const EditCustomer = () => {
     name: '',
     address: '',
     mobile: '',
-    email: '',
-    amountBalance: 0,
-    amountRecevied: [],
-    created: '',
-    loads: []
+    email: '',    
   });
 
   useEffect(() => {
@@ -25,7 +21,7 @@ const EditCustomer = () => {
           const docRef = doc(db, 'customers', id);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
-            const customerData = docSnap.data().customer;
+            const customerData = docSnap.data();
             setCustomer(customerData);
           } else {
             console.log('No such document!');
@@ -53,9 +49,9 @@ const EditCustomer = () => {
     try {
       const docRef = doc(db, 'customers', id);
       await updateDoc(docRef, {
-        customer: {
-          ...customer // Ensure only the customer object is updated
-        }
+       
+          ...customer 
+        
       });
       alert('Customer details updated successfully');
       router.back(); // Adjust the path as needed
