@@ -33,10 +33,11 @@ const AdminHome = () => {
     if(customersData && customersData.customerData  ){
       customersData.customerData.map((val)=>{
         paymentDetails.totalAmount = parseInt(paymentDetails.totalAmount) + parseInt(val.totalAmount)
-        paymentDetails.totalOutstanding = parseInt(paymentDetails.totalOutstanding) + parseInt(val.totalOutstanding)
         paymentDetails.totalReceived = parseInt(paymentDetails.totalReceived) + parseInt(val.totalReceived)
       })
     }
+    paymentDetails.totalOutstanding = paymentDetails.totalAmount - paymentDetails.totalReceived
+    
     setTurnOver(paymentDetails)
     setCustomers(customersData.customerData);
     setallLoads(customersData.loads);
@@ -113,7 +114,7 @@ const AdminHome = () => {
             <p className="text-2xl font-bold text-gray-900  flex items-center">{turnOver.totalReceived}  <MdCurrencyRupee className='pt-1'/></p>
           </div>
           <div className=" shadow-md rounded-lg p-4 bg-red-200">
-            <h2 className="text-lg font-semibold text-gray-800">Total Out-Stanging</h2>
+            <h2 className="text-lg font-semibold text-gray-800">Total Out-Standing</h2>
             <p className="text-2xl font-bold text-gray-900  flex items-center">{turnOver.totalOutstanding}  <MdCurrencyRupee className='pt-1'/></p>
           </div>
         </div>

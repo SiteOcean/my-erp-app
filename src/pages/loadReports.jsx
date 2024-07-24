@@ -8,8 +8,8 @@ import { MdCurrencyRupee } from "react-icons/md";
 const TotalLoads=()=>{
 
     const router = useRouter();
-
     const [allLoads, setallLoads] = useState([]);
+
     const [turnOver, setTurnOver] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [searchQuery, setSearchQuery] = useState('');
@@ -114,8 +114,9 @@ const TotalLoads=()=>{
                           {serialNo}
                         </td>
                         <td onClick={() => viewCoustomer(val.id)} 
-                        className="px-3 py-2 border-2 border-[#c6eaf3] cursor-pointer">
-                          {val.customerName}
+                        className="px-3  bg-slate-100 flex items-center py-2 border-2 border-[#c6eaf3] cursor-pointer">
+                          {val.customerName} 
+                        
                         </td>
                         <td className="px-3 py-2 border-2 border-[#c6eaf3]">
                           {val.vehicleNo}
