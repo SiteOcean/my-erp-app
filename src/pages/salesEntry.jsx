@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { doc, updateDoc, arrayUnion, getDoc, addDoc, collection } from 'firebase/firestore';
+import { doc, updateDoc, getDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../firebase';
 import NavBar from '@/components/navBar';
 import {getAllCustomersAndLoads} from '@/utility/getAllCustomersAndLoads';
 import getdateTime from '@/utility/getDateTime';
-import getAllLoads from '@/utility/getAllLoads';
 import { MdCurrencyRupee } from "react-icons/md";
 import MultipleSalesSection from '@/components/multipleSales';
 const SalesEntry = () => {
@@ -25,17 +24,16 @@ const SalesEntry = () => {
     dateTime:"",
   })
   const [customers, setCustomers] = useState(null);
-  const [allLoads, setallLoads] = useState(null);
-  const paymentDetails = {
-    totalAmount:0,
-    totalRecived:0,
-    totalOutstanding:0,
-  }
+  const [allLoads, setallLoads] = useState([]);
+  const [turnOver, setTurnOver] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+    if(loadData.vehicleNo.length < 4 || loadData.customerName.length < 2 || loadData.amount < 1){
+      return
+    }
     try {
       // Fetch the customer document
       const customerDocRef = doc(db, 'customers', loadData.id);
@@ -66,7 +64,12 @@ const SalesEntry = () => {
           ...customerData,
         
       });
-      const docRef = await addDoc(collection(db, 'allLoads'), {...loadData})
+      let temp = {...loadData}
+      temp.cashRecevied = temp.cashRecevied > 0 ? temp.cashRecevied : 0;
+      const docRef = await addDoc(collection(db, 'allLoads'), {
+        ...loadData,
+        timestamp: serverTimestamp(),
+      });
       if (docRef.id) {
         alert('Load added successfully!');
         setLoadData({
@@ -108,15 +111,27 @@ const SalesEntry = () => {
     const selectedCustomer = JSON.parse(e.target.value);
 
     setLoadData((prev)=>({...prev, [`id`] : selectedCustomer.id}))
-    setLoadData((prev)=>({...prev, [`customerName`] : selectedCustomer.name}))
+    setLoadData((prev)=>({...prev, [`customerName`] : selectedCustomer.customerName}))
 
   }
 
   const fetchCustomers = async () => {
     const customersData = await getAllCustomersAndLoads();
-    const Loads = await getAllLoads();
-    setCustomers(customersData);
-    setallLoads(Loads);
+    const paymentDetails = {
+      totalAmount:0,
+      totalReceived:0,
+      totalOutstanding:0,
+    }
+    if(customersData && customersData.customerData  ){
+      customersData.customerData.map((val)=>{
+        paymentDetails.totalAmount = parseInt(paymentDetails.totalAmount) + parseInt(val.totalAmount)
+        paymentDetails.totalOutstanding = parseInt(paymentDetails.totalOutstanding) + parseInt(val.totalOutstanding)
+        paymentDetails.totalReceived = parseInt(paymentDetails.totalReceived) + parseInt(val.totalReceived)
+      })
+    }
+    setTurnOver(paymentDetails)
+    setCustomers(customersData.customerData);
+    // setallLoads(customersData.loads);
   };
 
   const viewCoustomer=(custId)=>{
@@ -127,6 +142,9 @@ const SalesEntry = () => {
     fetchCustomers();
   }, []);
 
+  // const filteredCustomers = allLoads.filter((load) =>
+  //   load.vehicleNo.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
   let serialNo = 0
   return (
     <div className='pb-12'>
@@ -135,16 +153,16 @@ const SalesEntry = () => {
 
 
       <div className='flex justify-center'>
-      <div className='border-2 border-[#b4e6fd] p-1 md:p-3 rounded-md space-y-1 w-[97%] md:w-[70%] mt-4 md:mt-12'>
+      <div className='border-2 border-[#b4e6fd] p-2 md:p-3 rounded-md space-y-1 w-[97%] md:w-[70%] mt-4 md:mt-12'>
       <h2 className='text-center text-[25px] font-semibold underline uppercase text-[#90dcff] my-2'>Sales Entry</h2>
-      {customers && customers.customerData.length > 0 ? <form onSubmit={handleFormSubmit} className='p-2 md:p-3 grid grid-cols-1 md:grid-cols-3 md:gap-12 space-y-5 md:space-y-0'>
+      {customers && customers.length > 0 ? <form onSubmit={handleFormSubmit} className='p-2 md:p-3 grid grid-cols-1 md:grid-cols-3 md:gap-12 space-y-6 md:space-y-0'>
         
         <div className='flex flex-col'>
           <label className='text-[#32b5f1] font-semibold'>Select Customer:</label>
           <select className='border-2 p-2 rounded-md outline-[#32b5f1]' name="id" onChange={(e) => inputOnchangeWithCustomerName(e)} required>
             <option value="">Select Customer</option>
-            {customers.customerData.map(customer => (
-               <option key={customer.id} value={JSON.stringify({id:customer.id, name: customer.name})} className='capitalize text-slate-700'>{customer.name}</option>
+            {customers.map(customer => (
+               <option key={customer.id} value={JSON.stringify({id:customer.id, customerName: customer.customerName})} className='capitalize text-slate-700'>{customer.customerName}</option>
         
         ))}
       
@@ -187,8 +205,8 @@ const SalesEntry = () => {
           <input type="text" value={loadData.location} className='p-2 border-2 rounded-md outline-[#c5ebfd]' name="location" onChange={(e) => inputOnchange(e)} placeholder='Unload Site Location!' required />
         </div>
         <div className='flex flex-col'>
-          <label className='text-[#32b5f1] font-semibold'>Vehicle No:</label>
-          <input type="number" value={loadData.vehicleNo} className='p-2 border-2 rounded-md outline-[#c5ebfd]' name="vehicleNo" onChange={(e) => inputOnchange(e)}  placeholder='Vehicle No!' />
+          <label className='text-[#32b5f1] font-semibold' >Vehicle No:</label>
+          <input type="number" value={loadData.vehicleNo} className='p-2 border-2 rounded-md outline-[#c5ebfd]' name="vehicleNo" onChange={(e) => inputOnchange(e)}  placeholder='Vehicle No!' required/>
         </div>
         <div className='flex flex-col'>
           <label className='text-[#32b5f1] font-semibold flex justify-between'>Description: <span>{`(optional)`}</span></label>
@@ -229,14 +247,23 @@ const SalesEntry = () => {
     </div>
       </div>
 
-            
-
+     
 {/* sales list table */}
-{allLoads && (
+{/* {allLoads && (
         <div className='pl-1'>
          <h1 className="text-[25px] underline uppercase text-center font-bold text-[#32b5f1] my-3">
         Sales Report
       </h1>
+             
+             <div className="flex justify-center mb-4">
+          <input
+            type="text"
+            placeholder="Search by Vehicle No:"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="border-2 border-slate-300 p-1 rounded-md outline-[#32b5f1]"
+          />
+        </div>
           <div className="overflow-x-auto mx-auto pl-1 md:p-0 md:w-[90%]">
             <table className="w-full">
               <thead>
@@ -272,16 +299,10 @@ const SalesEntry = () => {
                 </tr>
               </thead>
               <tbody>
-                {allLoads && allLoads.length > 0 ? (
-                  allLoads.map((val, i) => {
+                {filteredCustomers && filteredCustomers.length > 0 ? (
+                  filteredCustomers.map((val, i) => {
                     serialNo += 1;
-                    paymentDetails.totalAmount =
-                      parseInt(paymentDetails.totalAmount) +
-                      parseInt(val.amount);
-                    paymentDetails.totalRecived =
-                      parseInt(paymentDetails.totalRecived) +
-                      parseInt(val.cashRecevied);
-
+                    
                     return (
                       <tr key={i} className="text-slate-500 capitalize font-semibold">
                         <td className="px-3 py-2 border-2 border-[#c6eaf3]">
@@ -331,31 +352,31 @@ const SalesEntry = () => {
               </tbody>
             </table>
           </div>
-          <div className="border-[#c6eaf3] border-2 p-3 space-y-2 text-[23px] font-semibold divide-y pl-1 md:p-3 md:w-[90%] mx-auto mb-3">
+          {turnOver && <div className="border-[#c6eaf3] border-2 p-3 space-y-2 text-[23px] font-semibold divide-y pl-1 md:p-3 md:w-[90%] mx-auto mb-3">
             <p className='flex pl-3 justify-end items-center'>
               <span className="text-[blue] w-[250px] underline">Total Amount</span>
               <span className="pl-2 font-bold flex text-slate-700">
-                : {paymentDetails.totalAmount} 
+                : {turnOver.totalAmount} 
               </span>
               <MdCurrencyRupee className='text-slate-700'/>
             </p>
             <p className='flex pl-3 justify-end items-center text-slate-700'>
               <span className="text-[green] w-[250px] underline">Cash Received</span>
               <span className="pl-2 font-bold">
-                : {paymentDetails.totalRecived}
+                : {turnOver.totalReceived}
               </span>
               <MdCurrencyRupee/>
             </p>
             <p className='flex pl-2 justify-end items-center text-slate-700'>
               <span className="text-[red] w-[250px] underline">Total Outstanding</span>
               <span className="pl-2 font-bold">
-                : {paymentDetails.totalAmount - paymentDetails.totalRecived}
+                : {turnOver.totalOutstanding}
               </span>
               <MdCurrencyRupee/>
             </p>
-          </div>
+          </div>}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

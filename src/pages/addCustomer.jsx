@@ -7,7 +7,7 @@ import { set } from 'date-fns';
 
 const AddCustomer = () => {
   const [customer, setCustomer] = useState({
-    name: '',
+    customerName: '',
     mobile: '',
     address: '',
     email: '',
@@ -31,7 +31,7 @@ const AddCustomer = () => {
    
     try {
       if (window.confirm(`Are you sure you want to add this customer? 
-        Name: ${customer.name} 
+        Name: ${customer.customerName} 
         Mobile: ${customer.mobile} 
         Address: ${customer.address}
         Email: ${customer.email}`)) {
@@ -48,7 +48,7 @@ const AddCustomer = () => {
         if (docRef.id) {
           alert('Customer added successfully');
           setCustomer((prev)=>({
-            name: '',
+            customerName: '',
             mobile: '',
             address: '',
             email: '',
@@ -84,8 +84,8 @@ const AddCustomer = () => {
         <input
           type="text"
           id="name"
-          name="name"
-          value={customer.name}
+          name="customerName"
+          value={customer.customerName}
           onChange={handleChange}
           required
           placeholder='Name'

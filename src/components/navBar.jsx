@@ -41,10 +41,17 @@ const NavBar = () => {
                             
                         </Link>
                     </li>
+                   
                     <li>
                         <Link href={'/salesEntry'} className={`block md:inline-block border rounded-md px-3 py-2 hover:bg-[white] hover:text-[#32b5f1] duration-300 ${routerPath.pathname === "/salesEntry" ? "bg-[white] text-[#32b5f1]" : ""}`}>
                                 Sales Entry
                           
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href={'/loadReports'}className={`block md:inline-block border rounded-md px-3 py-2 hover:bg-[white] hover:text-[#32b5f1] duration-300 ${routerPath.pathname === "/loginSection" ? "bg-[white] text-[#32b5f1]" : ""}`}>
+                                Load Reports
+                           
                         </Link>
                     </li>
                     <li>

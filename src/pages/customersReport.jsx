@@ -34,19 +34,19 @@ const CustomersReportPage = () => {
     getCustomers();
   }, []);
 
-  // Filter customers based on the search query
   const filteredCustomers = customers.filter((customer) =>
-    customer.name.toLowerCase().includes(searchQuery.toLowerCase())
+    customer.customerName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div>
       <NavBar />
-      <div className="min-h-[80vh] mt-6">
-        <h1 className="text-center my-3 font-semibold text-[23px] uppercase underline underline-offset-2 text-[#32b5f1]">
+      <div className="min-h-[80vh] mt-3 md:w-[90%] mx-auto">
+      <div className="flex justify-between items-center px-3 py-3">
+        <h1 className="text-center font-semibold text-[23px] uppercase underline underline-offset-2 text-[#32b5f1]">
           Customers List
         </h1>
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center">
           <input
             type="text"
             placeholder="Search by name"
@@ -55,7 +55,8 @@ const CustomersReportPage = () => {
             className="border-2 border-slate-300 p-1 rounded-md outline-[#32b5f1]"
           />
         </div>
-        <div className="overflow-x-auto mx-auto pl-2 w-[97%] md:w-[80%] p-1">
+        </div>
+        <div className="overflow-x-auto mx-auto pl-2 p-1 pb-3">
           <table className="w-full mx-auto">
             <thead className="border bg-slate-200 text-left">
               <tr>
@@ -80,7 +81,7 @@ const CustomersReportPage = () => {
                       onClick={() => viewCustomer(customer.id)}
                       className="border-2 cursor-pointer border-slate-300 px-2 py-1"
                     >
-                      {customer.name}
+                      {customer.customerName}
                     </td>
                     <td className="border-2 border-slate-300 px-2 py-1">
                       {customer.mobile}

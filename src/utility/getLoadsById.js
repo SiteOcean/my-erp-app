@@ -1,12 +1,14 @@
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, orderBy } from "firebase/firestore";
 
 import { db } from '../../firebase';
 
 const getLoadsById = async (loadId) => {
-  const querySnapshot = await getDocs(collection(db, 'allLoads'));
+  const q = query(collection(db, 'allLoads'), orderBy('timestamp', 'asc'));
+  const querySnapshotLoads = await getDocs(q);
+
   let loadDetail = [];
 
-  querySnapshot.forEach((doc) => {
+  querySnapshotLoads.forEach((doc) => {
   
     if(loadId === doc.data().id){
     loadDetail.push({ id: doc.id,...doc.data() });

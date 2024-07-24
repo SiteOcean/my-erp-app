@@ -1,5 +1,4 @@
 import { getAllCustomersAndLoads } from "@/utility/getAllCustomersAndLoads";
-import getAllLoads from "@/utility/getAllLoads";
 import { useEffect, useState } from "react";
 
 
@@ -40,9 +39,9 @@ const MultipleSalesSection=()=>{
 
       const fetchCustomers = async () => {
         const customersData = await getAllCustomersAndLoads();
-        const Loads = await getAllLoads();
+       
         setCustomers(customersData);
-        setallLoads(Loads);
+        setallLoads(customersData);
       };
     
       const viewCoustomer=(custId)=>{
