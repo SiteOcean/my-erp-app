@@ -298,7 +298,7 @@ let transformedQuery;
             <p className='flex pl-3 justify-end items-center text-slate-700'>
               <span className="text-[red] w-[250px] underline">Total Outstanding</span>
               <span className="pl-2 font-bold">
-                : {customer.totalOutstanding}
+                : {customer.totalAmount - customer.totalReceived}
               </span>
               <MdCurrencyRupee/>
             </p>

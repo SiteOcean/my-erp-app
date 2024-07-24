@@ -176,7 +176,7 @@ const TotalLoads=()=>{
             <p className='flex pl-2 md:justify-end items-center text-slate-700'>
               <span className="text-[red] w-[250px] underline">Total Outstanding </span>
               <span className="pl-2 font-bold">
-                 : {turnOver.totalOutstanding}
+                 : {turnOver.totalAmount - turnOver.totalReceived}
               </span>
               <MdCurrencyRupee/>
             </p>
