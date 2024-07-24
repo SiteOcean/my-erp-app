@@ -11,7 +11,7 @@ const NavBar = () => {
     };
 
     return (
-        <div className="bg-[#32b5f1] text-white font-semibold sticky top-0">
+        <div className="bg-[#32b5f1] text-white font-semibold sticky top-0 z-50">
             <div className="md:flex justify-between items-center py-2 md:py-5 px-2 md:px-5 relative">
                 <div className="font-bold text-[23px] cursor-progress">
                     My_Erp_App

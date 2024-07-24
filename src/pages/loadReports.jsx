@@ -54,7 +54,7 @@ const TotalLoads=()=>{
             {allLoads && (
         <div className='pl-1 md:w-[90%] mx-auto pt-2 pb-9'>
        <div className="flex justify-between items-center px-3 py-3">
-       <h1 className="text-[25px] underline uppercase text-center font-bold text-[#32b5f1]">
+       <h1 className="md:text-[25px] underline uppercase text-center font-bold text-[#32b5f1]">
         Sales Report
       </h1>
              {/* input */}
@@ -72,49 +72,49 @@ const TotalLoads=()=>{
             <table className="w-full">
               <thead>
                 <tr className="text-[#256c7e] capitalize">
-                  <th className="px-3 py-2 border-4 border-[#c6eaf3]">SNo:</th>
-                  <th className="px-3 py-2 border-4 border-[#c6eaf3]">
+                  <th className="px-3 py-4 border-2 border-[#c6eaf3]">SNo:</th>
+                  <th className="px-3 py-4 border-2 border-[#c6eaf3]">
                     Customer Name
                   </th>
-                  <th className="px-3 py-2 border-4 border-[#c6eaf3]">
+                  <th className="px-3 py-4 border-2 border-[#c6eaf3]">
                     Vehicle No
                   </th>
-                  <th className="px-3 py-2 border-4 border-[#c6eaf3]">
+                  <th className="px-3 py-4 border-2 border-[#c6eaf3]">
                     Load Type
                   </th>
-                  <th className="px-3 py-2 border-4 border-[#c6eaf3]">
+                  <th className="px-3 py-4 border-2 border-[#c6eaf3]">
                     Quantity
                   </th>
-                  <th className="px-3 py-2 border-4 border-[#c6eaf3]">
+                  <th className="px-3 py-4 border-2 border-[#c6eaf3]">
                     Load Amount
                     </th>
-                  <th className="px-3 py-2 border-4 border-[#c6eaf3]">
+                  <th className="px-3 py-4 border-2 border-[#c6eaf3]">
                     Cash Received
                   </th>
-                  <th className="px-3 py-2 border-4 border-[#c6eaf3]">
+                  <th className="px-3 py-4 border-2 border-[#c6eaf3]">
                     Location
                   </th>
-                  <th className="px-3 py-2 border-4 border-[#c6eaf3]">
+                  <th className="px-3 py-4 border-2 border-[#c6eaf3]">
                     DateTime
                   </th>
-                  <th className="px-3 py-2 border-4 border-[#c6eaf3]">
+                  <th className="px-3 py-4 border-2 border-[#c6eaf3]">
                     Description
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="">
                 {filteredCustomers && filteredCustomers.length > 0 ? (
                   filteredCustomers.map((val, i) => {
                    
                     if(!val.vehicleNo) return null
                     serialNo += 1;
                     return (
-                      <tr key={i} className="text-slate-500 capitalize font-semibold">
-                        <td className="px-3 py-2 border-2 border-[#c6eaf3]">
+                      <tr key={i} onClick={() => viewCoustomer(val.id)}  className="text-slate-500 capitalize font-semibold cursor-pointer odd:bg-white even:bg-slate-50">
+                        <td className="px-3 py-2 border-2 border-[#c6eaf3] ">
                           {serialNo}
                         </td>
-                        <td onClick={() => viewCoustomer(val.id)} 
-                        className="px-3  bg-slate-100 flex items-center py-2 border-2 border-[#c6eaf3] cursor-pointer">
+                        <td 
+                        className="px-3 py-2 border-2 border-[#c6eaf3] ">
                           {val.customerName} 
                         
                         </td>
@@ -159,24 +159,25 @@ const TotalLoads=()=>{
             </table>
           </div>
           {turnOver && <div className="border-[#c6eaf3] border-2 p-3 space-y-2 text-[23px] font-semibold divide-y pl-1 md:p-3  mx-auto mb-3">
-            <p className='flex pl-3 md:justify-end items-center'>
-              <span className="text-[blue] w-[250px] underline">Total Amount</span>
+            <p className='flex pl-3 justify-between md:justify-end items-center'>
+              <span className="text-[blue] w-[200px] md:w-[250px] flex justify-between items-center"><span className="underline">
+              Total Amount</span><span >:</span></span>
               <span className="pl-2 font-bold flex text-slate-700">
-                : {turnOver.totalAmount} 
+                {turnOver.totalAmount} 
               </span>
-              <MdCurrencyRupee className='text-slate-700'/>
+              <MdCurrencyRupee className='text-slate-700 pt-1'/>
             </p>
-            <p className='flex pl-3 md:justify-end items-center text-slate-700'>
-              <span className="text-[green] w-[250px] underline">Cash Received</span>
+            <p className='flex pl-3 justify-between md:justify-end items-center text-slate-700'>
+              <span className="text-[green]  w-[200px]  md:w-[250px]  flex justify-between items-center "><span className="underline">Cash Received</span><span>:</span></span>
               <span className="pl-2 font-bold">
-                : {turnOver.totalReceived}
+                {turnOver.totalReceived}
               </span>
               <MdCurrencyRupee/>
             </p>
-            <p className='flex pl-2 md:justify-end items-center text-slate-700'>
-              <span className="text-[red] w-[250px] underline">Total Outstanding </span>
+            <p className='flex pl-2 justify-between md:justify-end items-center text-slate-700'>
+              <span className="text-[red] w-[200px]  md:w-[250px]   flex justify-between items-center"><span className="underline">Total Outstanding</span><span>:</span></span>
               <span className="pl-2 font-bold">
-                 : {turnOver.totalAmount - turnOver.totalReceived}
+                 {turnOver.totalAmount - turnOver.totalReceived}
               </span>
               <MdCurrencyRupee/>
             </p>

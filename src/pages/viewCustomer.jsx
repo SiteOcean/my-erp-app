@@ -152,7 +152,9 @@ let transformedQuery;
       // setIsLoading(false)
     }
   };
-
+  const temp=()=>{
+    
+  }
 
   filterLoads()
   return (
@@ -162,69 +164,79 @@ let transformedQuery;
      <div className='pb-12'>
       <div className="min-h-[40vh] mt-6 flex justify-center items-center">
        
-       <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg capitalize">
-         <h2 className="text-2xl font-bold mb-4 text-[#32b5f1] uppercase underline underline-offset-2">Customer Details:</h2>
-         <div className="overflow-x-auto">
-  <table className="min-w-full bg-white border border-gray-300">
-    <tbody className="font-bold text-slate-600">
-      <tr className="border-b">
-        <td className="px-2 py-2 border-r text-lg font-semibold">Name:</td>
-        <td className="px-4 py-2 text-lg">{customer.customerName}</td>
-      </tr>
-      <tr className="border-b">
-        <td className="px-2 py-2 border-r text-lg font-semibold">Mobile:</td>
-        <td className="px-4 py-2 text-lg">{customer.mobile}</td>
-      </tr>
-      <tr className="border-b">
-        <td className="px-2 py-2 border-r  text-lg font-semibold">Address:</td>
-        <td className="px-4 py-2 text-lg">{customer.address}</td>
-      </tr>
-      <tr className="border-b">
-        <td className="px-2 py-2 border-r  text-lg font-semibold">Email:</td>
-        <td className="px-4 py-2 text-lg">{customer.email}</td>
-      </tr>
-      <tr className="border-b">
-        <td className="px-2 py-2 border-r space-y-1 text-lg font-semibold">
-          <div className="">
+       <div className="w-full max-w-lg px-4 md:p-6 bg-white capitalize rounded-md md:rounded-lg">
+         {/* <h2 className="text-2xl font-bold mb-4 pl-2 md:pl-0 text-[#32b5f1] uppercase underline underline-offset-2">Customer Details:</h2> */}
+         <div className="overflow-x-auto p-1 md:p-4 ">
+  <div className="bg-white shadow-md rounded-md">
+    <div className="bg-blue-100 px-4 py-2  font-semibold text-lg rounded-t-md text-blue-900 capitalize">Customer Details:</div>
+    <div className="grid grid-cols-1 md:grid-cols-1 gap-4 p-4">
+      <div className="flex items-center border-b py-2">
+        <span className="font-semibold text-gray-700 w-1/3">Name:</span>
+        <span className="text-gray-900 w-2/3">{customer.customerName}</span>
+      </div>
+      <div className="flex items-center border-b py-2">
+        <span className="font-semibold text-gray-700 w-1/3">Mobile:</span>
+        <span className="text-gray-900 w-2/3">{customer.mobile}</span>
+      </div>
+      <div className="flex items-center border-b py-2">
+        <span className="font-semibold text-gray-700 w-1/3">Address:</span>
+        <span className="text-gray-900 w-2/3">{customer.address}</span>
+      </div>
+      <div className="flex items-center border-b py-2">
+        <span className="font-semibold text-gray-700 w-1/3">Email:</span>
+        <span className="text-gray-900 w-2/3">{customer.email}</span>
+      </div>
+      <div className="flex items-center justify-center md:justify-start pt-2">
+        <span className="font-semibold underline underline-offset-2 capitalize text-[green]">Update Payment:</span>
+      </div>
+      <div className="flex flex-col md:col-span-2 border-b py-2">
+        <div className="flex items-center mb-2">
+          <span className="font-semibold text-gray-700 w-1/3">Amount:</span>
           <input
             type="number"
-            placeholder='Enter Amount!'
-            name='cashRecevied'
+            placeholder="Enter Amount!"
+            name="cashRecevied"
             value={loadData.cashRecevied}
             onChange={(e) => inputOnchange(e)}
-            className="border hover:bg-slate-50 placeholder:text-[16px] placeholder:font-normal border-[#d0e5f1] p-1 rounded-md outline-[#32b5f1]"
+            className="border p-2 rounded-md w-2/3 focus:outline-none focus:ring-2 focus:ring-blue-300"
           />
         </div>
-        <div className="">
+        <div className="flex items-center">
+          <span className="font-semibold text-gray-700 w-1/3">Description:</span>
           <input
             type="text"
-            placeholder='Enter Description!'
-            name='description'
+            placeholder="Enter Description!"
+            name="description"
             value={loadData.description}
             onChange={(e) => inputOnchange(e)}
-            className="border hover:bg-slate-50 placeholder:text-[16px] placeholder:font-normal border-[#d0e5f1] p-1 rounded-md outline-[#32b5f1]"
+            className="border p-2 rounded-md w-2/3 focus:outline-none focus:ring-2 focus:ring-blue-300"
           />
         </div>
-        </td>
-        <td className="px-4 py-2 text-lg">
-          <button onClick={handleFormSubmit}
-          className='px-3 py-2 bg-[#2ddb2d] text-white font-semibold rounded'>Add Payment</button></td>
-      </tr>
-    </tbody>
-  </table>
+      </div>
+      <div className="md:col-span-2 flex justify-center py-4">
+        <button
+          onClick={handleFormSubmit}
+          className="bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+        >
+          Add Payment
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
+
 
        </div>
 </div>
 {/* select by data! */}
-<div className="flex justify-end mt-5 mb-3 gap-x-3 w-[97%] mx-auto md:w-[80%]">
+<div className="flex justify-end mt-5 mb-3 px-1 gap-x-3 w-[97%] mx-auto md:w-[80%]">
           <input
             type="date"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="border-2 hover:bg-slate-50 border-[#59bcf5] p-1 rounded-md outline-[#32b5f1]"
           />
-          <button className='py-1 px-2 hover:bg-slate-50 flex items-center justify-center gap-x-1 border-2 border-[#59bcf5] rounded-md' onClick={()=>setSearchQuery("")}>Show All <MdOutlineRefresh className='text-[#59bcf5] text-[20px]'/></button>
+          <button className='py-1 px-2 hover:bg-slate-50 flex items-center justify-center gap-x-1 border-2 border-[#59bcf5] rounded-md' onClick={()=>setSearchQuery("")}>Show All <MdOutlineRefresh className='text-[#59bcf5] md:text-[20px]'/></button>
         
         <button onClick={() => exportPdf(customer.customerName)} 
           className='py-2 px-3 bg-[blue] rounded-md text-white font-semibold'>Export Pdf</button>
@@ -278,27 +290,27 @@ let transformedQuery;
       </table>
    
      </div>
-     <div className="border-[#c6eaf3]  p-3 space-y-2 text-[23px] font-semibold divide-y pl-1
-     w-[97%] md:w-[80%] mx-auto pb-12">
-            <p className='flex pl-3 justify-end items-center'>
-              <span className="text-[blue] w-[250px] underline">Total Amount</span>
+     
+          <div className="border-[#c6eaf3] border-2 p-3 space-y-2 text-[23px] font-semibold divide-y pl-1 md:p-3  mx-auto mb-3">
+            <p className='flex pl-3 justify-between md:justify-end items-center'>
+              <span className="text-[blue] w-[200px] md:w-[250px] flex justify-between items-center"><span className="underline">
+              Total Amount</span><span >:</span></span>
               <span className="pl-2 font-bold flex text-slate-700">
-                : {customer.totalAmount} 
+                {customer.totalAmount} 
               </span>
-              <MdCurrencyRupee className='text-slate-700'/>
+              <MdCurrencyRupee className='text-slate-700 pt-1'/>
             </p>
-            <p className='flex pl-3 justify-end items-center text-slate-700'>
-              <span className="text-[green] w-[250px] underline">Cash Received</span>
+            <p className='flex pl-3 justify-between md:justify-end items-center text-slate-700'>
+              <span className="text-[green]  w-[200px]  md:w-[250px]  flex justify-between items-center "><span className="underline">Cash Received</span><span>:</span></span>
               <span className="pl-2 font-bold">
-                : {customer.totalReceived}
+                {customer.totalReceived}
               </span>
               <MdCurrencyRupee/>
             </p>
-            
-            <p className='flex pl-3 justify-end items-center text-slate-700'>
-              <span className="text-[red] w-[250px] underline">Total Outstanding</span>
+            <p className='flex pl-2 justify-between md:justify-end items-center text-slate-700'>
+              <span className="text-[red] w-[200px]  md:w-[250px]   flex justify-between items-center"><span className="underline">Total Outstanding</span><span>:</span></span>
               <span className="pl-2 font-bold">
-                : {customer.totalAmount - customer.totalReceived}
+                 {customer.totalAmount - customer.totalReceived}
               </span>
               <MdCurrencyRupee/>
             </p>

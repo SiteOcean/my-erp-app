@@ -43,8 +43,8 @@ const CustomersReportPage = () => {
       <NavBar />
       <div className="min-h-[80vh] mt-3 md:w-[90%] mx-auto">
       <div className="flex justify-between items-center px-3 py-3">
-        <h1 className="text-center font-semibold text-[23px] uppercase underline underline-offset-2 text-[#32b5f1]">
-          Customers List
+        <h1 className="text-center font-semibold md:text-[23px] uppercase underline underline-offset-2 text-[#32b5f1]">
+          Customers Lists
         </h1>
         <div className="flex justify-center">
           <input

@@ -24,10 +24,7 @@ const SalesEntry = () => {
     dateTime:"",
   })
   const [customers, setCustomers] = useState(null);
-  const [allLoads, setallLoads] = useState([]);
-  const [turnOver, setTurnOver] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('');
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -64,12 +61,15 @@ const SalesEntry = () => {
           ...customerData,
         
       });
+
       let temp = {...loadData}
       temp.cashRecevied = temp.cashRecevied > 0 ? temp.cashRecevied : 0;
+
       const docRef = await addDoc(collection(db, 'allLoads'), {
         ...loadData,
         timestamp: serverTimestamp(),
       });
+
       if (docRef.id) {
         alert('Load added successfully!');
         setLoadData({
@@ -129,7 +129,6 @@ const SalesEntry = () => {
         paymentDetails.totalReceived = parseInt(paymentDetails.totalReceived) + parseInt(val.totalReceived)
       })
     }
-    setTurnOver(paymentDetails)
     setCustomers(customersData.customerData);
     // setallLoads(customersData.loads);
   };
@@ -153,7 +152,7 @@ const SalesEntry = () => {
 
 
       <div className='flex justify-center'>
-      <div className='border-2 border-[#b4e6fd] p-2 md:p-3 rounded-md space-y-1 w-[97%] md:w-[70%] mt-4 md:mt-12'>
+      <div className='border-2 border-[#b4e6fd] p-3 md:p-3 rounded-md space-y-2 w-[97%] md:w-[70%] mt-4 md:mt-12'>
       <h2 className='text-center text-[25px] font-semibold underline uppercase text-[#90dcff] my-2'>Sales Entry</h2>
       {customers && customers.length > 0 ? <form onSubmit={handleFormSubmit} className='p-2 md:p-3 grid grid-cols-1 md:grid-cols-3 md:gap-12 space-y-6 md:space-y-0'>
         
@@ -197,7 +196,7 @@ const SalesEntry = () => {
         </div>
         <div className='flex flex-col'>
           <label className='text-[#32b5f1] font-semibold'>Cash Recevied:</label>
-          <input type="number" value={loadData.cashRecevied} className='p-2 border-2 rounded-md outline-[#c5ebfd]' name="cashRecevied" onChange={(e) => inputOnchange(e)}  placeholder='Cash Recevied!' required />
+          <input type="number" value={loadData.cashRecevied} className='p-2 border-2 rounded-md outline-[#c5ebfd]' name="cashRecevied" onChange={(e) => inputOnchange(e)}  placeholder='Cash Recevied!' />
         </div>
        
         <div className='flex flex-col'>

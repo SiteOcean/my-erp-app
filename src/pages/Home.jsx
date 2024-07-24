@@ -94,26 +94,26 @@ const AdminHome = () => {
     <div>
       <NavBar />
       {customers ? <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold text-center text-[#32b5f1] my-4">Admin Dashboard</h1>
+        <h1 className="text-2xl font-bold md:text-center text-[#32b5f1] mb-3 underline md:my-4">Admin Dashboard</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 ">
-          <div className=" shadow-md rounded-lg p-4 bg-blue-200">
+          <div className=" shadow-md rounded-lg p-4 bg-blue-100">
             <h2 className="text-lg font-semibold text-gray-800">Total Customers</h2>
             <p className="text-2xl font-bold text-gray-900">{customers.length}</p>
           </div>
-          <div className=" shadow-md rounded-lg p-4 bg-yellow-200">
+          <div className=" shadow-md rounded-lg p-4 bg-yellow-100">
             <h2 className="text-lg font-semibold text-gray-800">Total Orders</h2>
             <p className="text-2xl font-bold text-gray-900">{totalLoads}</p>
           </div>
-          <div className="shadow-md rounded-lg p-4 bg-purple-200">
+          <div className="shadow-md rounded-lg p-4 bg-purple-100">
             <h2 className="text-lg font-semibold text-gray-800 ">Total Sales</h2>
             <p className="text-2xl font-bold text-gray-900 flex items-center">{turnOver.totalAmount}  <MdCurrencyRupee className='pt-1'/></p>
           </div>
-          <div className=" shadow-md rounded-lg p-4 bg-green-200">
+          <div className=" shadow-md rounded-lg p-4 bg-green-100">
             <h2 className="text-lg font-semibold text-gray-800 ">Total Cash Received</h2>
             <p className="text-2xl font-bold text-gray-900  flex items-center">{turnOver.totalReceived}  <MdCurrencyRupee className='pt-1'/></p>
           </div>
-          <div className=" shadow-md rounded-lg p-4 bg-red-200">
+          <div className=" shadow-md rounded-lg p-4 bg-red-100">
             <h2 className="text-lg font-semibold text-gray-800">Total Out-Standing</h2>
             <p className="text-2xl font-bold text-gray-900  flex items-center">{turnOver.totalOutstanding}  <MdCurrencyRupee className='pt-1'/></p>
           </div>
