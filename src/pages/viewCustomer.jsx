@@ -13,7 +13,7 @@ import exportPdf from '@/utility/exportPdf';
 const ViewCustomer = () => {
   const router = useRouter();
   const { id } = router.query;
-
+  const [companyName, setCompanyName] = useState(false)
   const [customer, setCustomer] = useState(null);
   const [customerLoads, setCustomerLoads] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -74,7 +74,9 @@ const ViewCustomer = () => {
       fetchCustomerDetails();
     }
   }, [id]);
+
 let transformedQuery;
+
   const filterLoads = () => {
     let transformedQueryLocal = searchQuery.split('-').reverse().join('/');
 
@@ -152,11 +154,15 @@ let transformedQuery;
       // setIsLoading(false)
     }
   };
-  const temp=()=>{
+  const handleExportBtn=()=>{
+    if(!customer) return;
+    setCompanyName(true)
+    exportPdf(customer.customerName)
     
   }
 
-  filterLoads()
+  filterLoads();
+
   return (
     <div>
       <NavBar/>
@@ -164,7 +170,7 @@ let transformedQuery;
      <div className='pb-12'>
       <div className="min-h-[40vh] mt-6 flex justify-center items-center">
        
-       <div className="w-full max-w-lg px-4 md:p-6 bg-white capitalize rounded-md md:rounded-lg">
+       <div className="w-full max-w-lg px-4 md:p-2 bg-white capitalize rounded-md md:rounded-lg">
          {/* <h2 className="text-2xl font-bold mb-4 pl-2 md:pl-0 text-[#32b5f1] uppercase underline underline-offset-2">Customer Details:</h2> */}
          <div className="overflow-x-auto p-1 md:p-4 ">
   <div className="bg-white shadow-md rounded-md">
@@ -172,19 +178,19 @@ let transformedQuery;
     <div className="grid grid-cols-1 md:grid-cols-1 gap-4 p-4">
       <div className="flex items-center border-b py-2">
         <span className="font-semibold text-gray-700 w-1/3">Name:</span>
-        <span className="text-gray-900 w-2/3">{customer.customerName}</span>
+        <span className="text-gray-900 ">{customer.customerName}</span>
       </div>
       <div className="flex items-center border-b py-2">
         <span className="font-semibold text-gray-700 w-1/3">Mobile:</span>
-        <span className="text-gray-900 w-2/3">{customer.mobile}</span>
+        <span className="text-gray-900">{customer.mobile}</span>
       </div>
       <div className="flex items-center border-b py-2">
         <span className="font-semibold text-gray-700 w-1/3">Address:</span>
-        <span className="text-gray-900 w-2/3">{customer.address}</span>
+        <span className="text-gray-900 ">{customer.address}</span>
       </div>
       <div className="flex items-center border-b py-2">
         <span className="font-semibold text-gray-700 w-1/3">Email:</span>
-        <span className="text-gray-900 w-2/3">{customer.email}</span>
+        <span className="text-gray-900">{customer.email}</span>
       </div>
       <div className="flex items-center justify-center md:justify-start pt-2">
         <span className="font-semibold underline underline-offset-2 capitalize text-[green]">Update Payment:</span>
@@ -229,7 +235,7 @@ let transformedQuery;
        </div>
 </div>
 {/* select by data! */}
-<div className="flex justify-end mt-5 mb-3 px-1 gap-x-3 w-[97%] mx-auto md:w-[80%]">
+<div className="flex justify-end sticky top-[50px] md:top-[79px] bg-white z-30 mt-5 mb-3 px-1 gap-x-3 py-1 md:py-2 w-[97%] mx-auto md:w-[80%]">
           <input
             type="date"
             value={searchQuery}
@@ -238,13 +244,13 @@ let transformedQuery;
           />
           <button className='py-1 px-2 hover:bg-slate-50 flex items-center justify-center gap-x-1 border-2 border-[#59bcf5] rounded-md' onClick={()=>setSearchQuery("")}>Show All <MdOutlineRefresh className='text-[#59bcf5] md:text-[20px]'/></button>
         
-        <button onClick={() => exportPdf(customer.customerName)} 
+        <button onClick={handleExportBtn} 
           className='py-2 px-3 bg-[blue] rounded-md text-white font-semibold'>Export Pdf</button>
         </div>
       {/* Tables */}
     
      <div id={customer.customerName} className='overflow-x-auto mx-auto p-3 w-[97%] md:w-[80%] '>
-    
+        {/* {companyName && <div>test</div>} */}
       <h1 className='py-2 text-[20px] my-2 text-[#45b8d4] underline uppercase font-semibold underline-offset-2'>Load Details:</h1>
      <table className='w-full capitalize'>
         <thead >
@@ -260,8 +266,6 @@ let transformedQuery;
           <th className='px-3 py-2 border-2 border-[#c6eaf3]'>Debit:</th>
           <th className='px-3 py-2 border-2 border-[#c6eaf3]'>location:</th>
           <th className='px-3 py-2 border-2 border-[#c6eaf3]'>description:</th>
-
-        
           </tr>
         </thead>
 
@@ -278,20 +282,17 @@ let transformedQuery;
                  <td className='px-3 py-2 border-2 border-[#c6eaf3] text-[#f84d4d]'>{val.amount ? val.amount : "-"}</td>
                  <td className='px-3 py-2 border-2 border-[#c6eaf3] text-[green]'>{val.cashRecevied ? val.cashRecevied : "-"}</td>
                  <td className='px-3 py-2 border-2 border-[#c6eaf3]'>{val.location ? val.location  : "-"}</td>
-                
                  <td className='px-3 py-2 border-2 border-[#c6eaf3]'>{val.description ? val.description : "-"}</td>
             </tr>)
           })  
           :
-          <div>No Loads...</div>}
-
-         
+          <div>No Loads...</div>}   
         </tbody>
       </table>
    
      </div>
      
-          <div className="border-[#c6eaf3] border-2 p-3 space-y-2 text-[23px] font-semibold divide-y pl-1 md:p-3  mx-auto mb-3">
+          <div className="border-[#c6eaf3] border-2 p-3 space-y-2 text-[23px] font-semibold divide-y pl-1 md:p-3  mx-auto mb-3 w-[97%] md:w-[79%]">
             <p className='flex pl-3 justify-between md:justify-end items-center'>
               <span className="text-[blue] w-[200px] md:w-[250px] flex justify-between items-center"><span className="underline">
               Total Amount</span><span >:</span></span>

@@ -5,6 +5,7 @@ import { Chart, registerables } from 'chart.js';
 import NavBar from '@/components/navBar';
 import { getAllCustomersAndLoads } from "@/utility/getAllCustomersAndLoads"
 import { MdCurrencyRupee } from 'react-icons/md';
+import Link from 'next/link';
 
 Chart.register(...registerables);
 
@@ -43,7 +44,7 @@ const AdminHome = () => {
     setallLoads(customersData.loads);
 
 
-    let chartData = {}; // Initialize as an empty object
+    let LoadData = {}; // Initialize as an empty object
     let tempTotalLoads = 0; // Initialize the counter for total loads
 
     customersData.loads.forEach((val) => {
@@ -54,12 +55,12 @@ const AdminHome = () => {
         }
         
         // If the loadType is not in chartData, initialize it
-        if (!chartData[val.loadType]) {
-            chartData[val.loadType] = 0;
+        if (!LoadData[val.loadType]) {
+          LoadData[val.loadType] = 0;
         }
 
         // Increment the count for the current loadType
-        chartData[val.loadType]++;
+        LoadData[val.loadType]++;
     });
     setTotalLoads(tempTotalLoads)
 
@@ -71,7 +72,7 @@ const AdminHome = () => {
     datasets: [
       {
         label: 'Sales',
-        data: allTypes.map(type => chartData[type.toLowerCase()] || 0),
+        data: allTypes.map(type => LoadData[type.toLowerCase()] || 0),
         backgroundColor: 'rgba(54, 162, 235, 0.6)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
@@ -97,14 +98,14 @@ const AdminHome = () => {
         <h1 className="text-2xl font-bold md:text-center text-[#32b5f1] mb-3 underline md:my-4">Admin Dashboard</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 ">
-          <div className=" shadow-md rounded-lg p-4 bg-blue-100">
+          <Link href={'/customersReport'} className=" shadow-md rounded-lg p-4 bg-blue-100">
             <h2 className="text-lg font-semibold text-gray-800">Total Customers</h2>
             <p className="text-2xl font-bold text-gray-900">{customers.length}</p>
-          </div>
-          <div className=" shadow-md rounded-lg p-4 bg-yellow-100">
+          </Link>
+          <Link href={'/loadReports'} className=" shadow-md rounded-lg p-4 bg-yellow-100">
             <h2 className="text-lg font-semibold text-gray-800">Total Orders</h2>
             <p className="text-2xl font-bold text-gray-900">{totalLoads}</p>
-          </div>
+          </Link>
           <div className="shadow-md rounded-lg p-4 bg-purple-100">
             <h2 className="text-lg font-semibold text-gray-800 ">Total Sales</h2>
             <p className="text-2xl font-bold text-gray-900 flex items-center">{turnOver.totalAmount}  <MdCurrencyRupee className='pt-1'/></p>

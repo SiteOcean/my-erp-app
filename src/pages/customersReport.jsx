@@ -76,20 +76,24 @@ const CustomersReportPage = () => {
                     key={customer.id}
                     className="odd:bg-white even:bg-slate-50 hover:bg-slate-100"
                   >
-                    <td className="border-2 border-slate-300 px-2 py-1">{i + 1}</td>
+                    <td onClick={() => viewCustomer(customer.id)}
+                    className="border-2 cursor-pointer border-slate-300 px-2 py-1">{i + 1}</td>
                     <td
                       onClick={() => viewCustomer(customer.id)}
                       className="border-2 cursor-pointer border-slate-300 px-2 py-1"
                     >
                       {customer.customerName}
                     </td>
-                    <td className="border-2 border-slate-300 px-2 py-1">
+                    <td onClick={() => viewCustomer(customer.id)}
+                    className="border-2 cursor-pointer border-slate-300 px-2 py-1">
                       {customer.mobile}
                     </td>
-                    <td className="border-2 border-slate-300 px-2 py-1">
+                    <td onClick={() => viewCustomer(customer.id)}
+                    className="border-2 cursor-pointer border-slate-300 px-2 py-1">
                       {customer.email}
                     </td>
-                    <td className="border-2 border-slate-300 px-2 py-1">
+                    <td onClick={() => viewCustomer(customer.id)}
+                    className="border-2 cursor-pointer border-slate-300 px-2 py-1">
                       {customer.address}
                     </td>
                     <td className="border-2 border-slate-300 px-2 py-1">
@@ -100,7 +104,8 @@ const CustomersReportPage = () => {
                         Edit
                       </button>
                     </td>
-                    <td className="border-2 border-slate-300 px-2 py-1">
+                    <td
+                    className="border-2 border-slate-300 px-2 py-1">
                       <button className="bg-[#ff5050] p-1 w-full">Delete</button>
                     </td>
                   </tr>
