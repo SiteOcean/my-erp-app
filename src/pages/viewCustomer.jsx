@@ -9,6 +9,7 @@ import { MdOutlineRefresh } from "react-icons/md";
 import getCustomerById from '@/utility/getCustomerById';
 import getdateTime from '@/utility/getDateTime';
 import exportPdf from '@/utility/exportPdf';
+import CustomerDetails from '@/components/customerTable';
 
 const ViewCustomer = () => {
   const router = useRouter();
@@ -249,8 +250,8 @@ let transformedQuery;
         </div>
       {/* Tables */}
     
-     <div id={customer.customerName} className='overflow-x-auto mx-auto p-3 w-[97%] md:w-[80%] '>
-        {/* {companyName && <div>test</div>} */}
+     <div className='overflow-x-auto mx-auto p-3 w-[97%] md:w-[80%] '>
+      
       <h1 className='py-2 text-[20px] my-2 text-[#45b8d4] underline uppercase font-semibold underline-offset-2'>Load Details:</h1>
      <table className='w-full capitalize'>
         <thead >
@@ -316,9 +317,12 @@ let transformedQuery;
               <MdCurrencyRupee/>
             </p>
           </div>
+          <div className=''>
+      <CustomerDetails elementId={customer.customerName} transformedQuery={transformedQuery}/>
+      </div>
      </div>
       : <div>Loading...</div>}
-      
+     
     </div>
   );
 };
