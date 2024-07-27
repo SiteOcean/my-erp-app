@@ -94,6 +94,7 @@ let transformedQuery;
      if(!id || id === "") return;
      if(loadData.cashRecevied < 1) return;
       // Fetch the customer document
+      if (window.confirm(`Confirm Payment!`)) {
       const customerDocRef = doc(db, 'customers', id);
       const customerDocSnap = await getDoc(customerDocRef);
 
@@ -146,7 +147,20 @@ let transformedQuery;
     
       fetchCustomerLoads();
       fetchCustomerDetails()
-      
+    }else{
+      setLoadData({
+        id:"",
+        customerName:"",
+        loadType:"",
+        quantity:"",
+        amount:"",
+        cashRecevied:"",
+        location:"",
+        description:"",
+        vehicleNo:"",
+        dateTime:"",
+      });
+    }
     } catch (error) {
       console.error('Error adding load to customer:', error);
       alert('Failed to add load. Please try again.');
@@ -236,21 +250,21 @@ let transformedQuery;
        </div>
 </div>
 {/* select by data! */}
-<div className="flex justify-end sticky top-[50px] md:top-[79px] bg-white z-30 mt-5 mb-3 px-1 gap-x-3 py-1 md:py-2 w-[97%] mx-auto md:w-[80%]">
+<div className="flex justify-end sticky top-[50px] md:top-[79px] bg-white z-30 mt-5 mb-3 px-1 gap-x-3 py-1 md:py-2 w-[97%] mx-auto md:w-[80%] ">
           <input
             type="date"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="border-2 hover:bg-slate-50 border-[#59bcf5] p-1 rounded-md outline-[#32b5f1]"
           />
-          <button className='py-1 px-2 hover:bg-slate-50 flex items-center justify-center gap-x-1 border-2 border-[#59bcf5] rounded-md' onClick={()=>setSearchQuery("")}>Show All <MdOutlineRefresh className='text-[#59bcf5] md:text-[20px]'/></button>
+          <button className='py-1 px-2 hover:bg-slate-50 flex items-center justify-center gap-x-1 border-2 border-[#59bcf5] rounded-md text-[12px] md:text-[17px]' onClick={()=>setSearchQuery("")}>Show All <MdOutlineRefresh className='text-[#59bcf5] md:text-[20px]'/></button>
         
         <button onClick={handleExportBtn} 
           className='py-2 px-3 bg-[blue] rounded-md text-white font-semibold'>Export Pdf</button>
         </div>
       {/* Tables */}
     
-     <div className='overflow-x-auto mx-auto p-3 w-[97%] md:w-[80%] '>
+     {/* <div className='overflow-x-auto mx-auto p-3 w-[97%] md:w-[80%] '>
       
       <h1 className='py-2 text-[20px] my-2 text-[#45b8d4] underline uppercase font-semibold underline-offset-2'>Load Details:</h1>
      <table className='w-full capitalize'>
@@ -291,35 +305,38 @@ let transformedQuery;
         </tbody>
       </table>
    
-     </div>
-     
-          <div className="border-[#c6eaf3] border-2 p-3 space-y-2 text-[23px] font-semibold divide-y pl-1 md:p-3  mx-auto mb-3 w-[97%] md:w-[79%]">
-            <p className='flex pl-3 justify-between md:justify-end items-center'>
-              <span className="text-[blue] w-[200px] md:w-[250px] flex justify-between items-center"><span className="underline">
-              Total Amount</span><span >:</span></span>
-              <span className="pl-2 font-bold flex text-slate-700">
-                {customer.totalAmount} 
-              </span>
-              <MdCurrencyRupee className='text-slate-700 pt-1'/>
-            </p>
-            <p className='flex pl-3 justify-between md:justify-end items-center text-slate-700'>
-              <span className="text-[green]  w-[200px]  md:w-[250px]  flex justify-between items-center "><span className="underline">Cash Received</span><span>:</span></span>
-              <span className="pl-2 font-bold">
-                {customer.totalReceived}
-              </span>
-              <MdCurrencyRupee/>
-            </p>
-            <p className='flex pl-2 justify-between md:justify-end items-center text-slate-700'>
-              <span className="text-[red] w-[200px]  md:w-[250px]   flex justify-between items-center"><span className="underline">Total Outstanding</span><span>:</span></span>
-              <span className="pl-2 font-bold">
-                 {customer.totalAmount - customer.totalReceived}
-              </span>
-              <MdCurrencyRupee/>
-            </p>
-          </div>
-          <div className=''>
+     </div> */}
+      <div className=''>
       <CustomerDetails elementId={customer.customerName} transformedQuery={transformedQuery}/>
       </div>
+          <div className="border-[#c6eaf3] p-3 space-y-2 text-[17px] md:text-[23px] font-semibold divide-y pl-1 md:p-3  mx-auto mb-3 w-[97%] md:w-[79%]">
+            <p className='flex pl-3 justify-between md:justify-end items-center'>
+              <span className="text-[#444141] w-[200px] md:w-[250px] flex justify-between items-center"><span className="underline">
+              Total Amount</span><span >:</span></span>
+              <span className="pl-2 font-bold flex items-center text-slate-700 md:w-[150px] ">
+                {customer.totalAmount} 
+                <MdCurrencyRupee className='text-slate-700 pt-1'/>
+
+              </span>
+            </p>
+            <p className='flex pl-3 justify-between md:justify-end items-center text-slate-700'>
+              <span className="text-[#38be38]  w-[200px]  md:w-[250px]  flex justify-between items-center "><span className="underline">Cash Received</span><span>:</span></span>
+              <span className="pl-2 font-bold md:w-[150px] flex items-center ">
+                {customer.totalReceived}
+                <MdCurrencyRupee/>
+              </span>
+              
+            </p>
+            <p className='flex pl-2 justify-between md:justify-end items-center text-slate-700'>
+              <span className="text-[#fc3f3f] w-[200px]  md:w-[250px]   flex justify-between items-center"><span className="underline">Total Outstanding</span><span>:</span></span>
+              <span className="pl-2 font-bold md:w-[150px] flex items-center">
+                 {customer.totalAmount - customer.totalReceived}
+                 <MdCurrencyRupee/>
+
+              </span>
+            </p>
+          </div>
+         
      </div>
       : <div>Loading...</div>}
      
